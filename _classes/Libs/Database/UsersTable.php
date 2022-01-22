@@ -30,9 +30,30 @@ class UsersTable
         try {
             $statement = $this->db->query("SELECT users.* , roles.name as role ,roles.value 
                                          FROM users LEFT JOIN roles on users.role_id=roles.id");
-             return $statement->fetchAll();
+            return $statement->fetchAll();
         } catch (PDOException $e) {
             return $e->getMessage();
         }
+    }
+    public function findeByEmailAndPassword($email, $password)
+    {
+        $statement = $this->db->prepare("
+            SELECT users.* , roles.name AS role , roles.value
+            FROM users LEFT JOIN roles
+            ON users.role_id = roles.id
+            WHERE users.email = :email AND users.password = :password
+        ");
+        $statement->execute([
+            ':email' => $email,
+            ':password' => $password
+        ]);
+        $row = $statement->fetch();
+        return $row ?? false;
+    }
+    public function updatePhoto($id, $name)
+    {
+        $statement = $this->db->prepare("UPDATE users SET photo=:name WHERE id=:id");
+        $statement->execute([':name' => $name, ':id' => $id]);
+        return $statement->rowCount();
     }
 }

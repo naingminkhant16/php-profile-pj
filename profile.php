@@ -1,10 +1,10 @@
 <?php
-session_start();
-if (!isset($_SESSION['user'])) {
-    header("location: index.php");
-    exit();
-};
+include "./vendor/autoload.php";
 
+use Helpers\Auth;
+
+$auth = Auth::check();
+// die(var_dump($auth->name));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,10 @@ if (!isset($_SESSION['user'])) {
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-3"><?= $_SESSION['user']['username'] ?> (Twice)</h1>
+        <h1 class="mb-3">
+            <?= $auth->name ?>(Twice)
+            <span class='fw-normal text-muted'><?= $auth->role ?></span>
+        </h1>
 
         <?php if (isset($_GET['error'])) : ?>
             <div class="alert alert-warning">
@@ -32,8 +35,8 @@ if (!isset($_SESSION['user'])) {
             </div>
         <?php endif; ?>
 
-        <?php if (file_exists('_actions/photos/profile.jpg')) : ?>
-            <img class="img-thumbnail mb-3 " src="_actions/photos/profile.jpg" alt="pp" width="400">
+        <?php if ($auth->photo) : ?>
+            <img class="img-thumbnail mb-3 " src="_actions/photos/<?= $auth->photo ?> " alt="pp" width="400">
         <?php endif; ?>
 
         <form action="_actions/upload.php" method="post" enctype="multipart/form-data">
@@ -44,17 +47,18 @@ if (!isset($_SESSION['user'])) {
         </form>
         <ul class="list-group">
             <li class="list-group-item">
-                <b>Email:</b> sana@gmail.com
+                <b>Email:</b> <?= $auth->email ?>
             </li>
             <li class="list-group-item">
-                <b>Phone:</b> (09) 243 867 645
+                <b>Phone:</b> <?= $auth->phone ?>
             </li>
             <li class="list-group-item">
-                <b>Address:</b> No. 969, Sana Street, Okasa City ,Japan
+                <b>Address:</b> <?= $auth->address ?>
             </li>
         </ul>
         <br>
-        <a href="_actions/logout.php">Logout</a>
+        <a href="admin.php">Manage User</a>
+        <a href="_actions/logout.php" class='text-danger'>Logout</a>
     </div>
 </body>
 
