@@ -15,5 +15,5 @@ class HTTP
         exit();
     }
 }
-
-// HTTP::redirect("_actions/populate.php",'');
+// example 
+// HTTP::redirect("/_actions/populate.php",'');
