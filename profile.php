@@ -25,8 +25,8 @@ $auth = Auth::check();
 <body>
     <div class="container mt-5">
         <h1 class="mb-3">
-            <?= $auth->name ?>(Twice)
-            <span class='fw-normal text-muted'><?= $auth->role ?></span>
+            <?= $auth->name ?>
+            <span class='fw-normal text-muted'>(<?= $auth->role ?>)</span>
         </h1>
 
         <?php if (isset($_GET['error'])) : ?>
@@ -36,7 +36,7 @@ $auth = Auth::check();
         <?php endif; ?>
 
         <?php if ($auth->photo) : ?>
-            <img class="img-thumbnail mb-3 " src="_actions/photos/<?= $auth->photo ?> " alt="pp" width="400">
+            <img class="img-thumbnail mb-3 " src="_actions/photos/<?= $auth->photo ?> " alt="pp" width="600">
         <?php endif; ?>
 
         <form action="_actions/upload.php" method="post" enctype="multipart/form-data">

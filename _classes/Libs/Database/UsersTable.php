@@ -37,12 +37,12 @@ class UsersTable
     }
     public function findeByEmailAndPassword($email, $password)
     {
-        $statement = $this->db->prepare("
-            SELECT users.* , roles.name AS role , roles.value
+        $statement = $this->db->prepare(
+            "SELECT users.* , roles.name AS role , roles.value
             FROM users LEFT JOIN roles
             ON users.role_id = roles.id
-            WHERE users.email = :email AND users.password = :password
-        ");
+            WHERE users.email = :email AND users.password = :password"
+        );
         $statement->execute([
             ':email' => $email,
             ':password' => $password
@@ -55,5 +55,28 @@ class UsersTable
         $statement = $this->db->prepare("UPDATE users SET photo=:name WHERE id=:id");
         $statement->execute([':name' => $name, ':id' => $id]);
         return $statement->rowCount();
+    }
+    public function suspend($id)
+    {
+        $statement = $this->db->prepare("UPDATE users SET suspended=1 WHERE id=:id");
+        $statement->execute([':id' => $id]);
+        return $statement->rowCount();
+    }
+    public function unsuspend($id)
+    {
+        $statement = $this->db->prepare("UPDATE users SET suspended=0 WHERE id=:id");
+        $statement->execute([':id' => $id]);
+        return $statement->rowCount();
+    }
+    public function changeRole($id, $role)
+    {
+        $statement = $this->db->prepare('UPDATE users SET role_id=:role WHERE id=:id');
+        $statement->execute([':id' => $id, ':role' => $role]);
+        return $statement->rowCount();
+    }
+    public function delete($id)
+    {
+        $statement = $this->db->prepare('DELETE FROM users WHERE id=:id');
+        $statement->execute([':id' => $id]);
     }
 }
