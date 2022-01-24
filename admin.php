@@ -72,7 +72,7 @@ $auth = Auth::check();
                                 <?php endif ?>
 
                                 <?php if ($user->id !== $auth->id) : ?>
-                                    <a href="_action/delete.php?id=<?= $user->id ?>" class='btn btn-sm btn-outline-danger' onclick="return confirm('Are you sure?')">Delete</a>
+                                    <a href="_actions/delete.php?id=<?= $user->id ?>" class='btn btn-sm btn-outline-danger' onclick="return confirm('Are you sure?')">Delete</a>
                                 <?php endif; ?>
                             </div>
                         <?php else : ?>

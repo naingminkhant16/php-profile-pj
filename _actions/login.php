@@ -14,9 +14,10 @@ $user = $table->findeByEmailAndPassword($email, $password);
 
 // die(var_dump($user));
 if ($user) {
-    // if ($table->suspended($user->id)) {
-    //     HTTP::redirect('/index.php', 'suspended=1');
-    // }
+    if ($user->suspended) {
+        $table->suspend($user->id);
+        HTTP::redirect('/index.php', 'suspended=1');
+    }
     $_SESSION['user'] = $user;
     HTTP::redirect('/profile.php');
 } else {
